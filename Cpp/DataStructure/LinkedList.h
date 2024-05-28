@@ -7,20 +7,22 @@
 
 #include <stdio.h>
 
-struct Node
-{
-    int data;
-    Node* next = nullptr;
-};
 
-class LinkedList//ÀüÃ¼ÀûÀ¸·Î ÄÚµå ÃÖÀûÈ­ÇÏ±â
+template<class T>
+class LinkedList//ì „ì²´ì ìœ¼ë¡œ ì½”ë“œ ìµœì í™”í•˜ê¸°
 {
 private:
+
+    struct Node
+    {
+        T data;
+        Node* next = nullptr;
+    };
 
     Node* _head = nullptr;
     Node* _nodePointer = nullptr;
     Node* _prevNodePointer = nullptr;
-    size_t _count = 0;
+    long long _count = 0;
     bool _isEmpty = true;
 public:
     LinkedList()
@@ -50,7 +52,7 @@ public:
         _isEmpty = true;
     }
 
-    void AddFirst(int item)
+    void AddFirst(T item)
     {
         if (_head == nullptr && _isEmpty)
         {
@@ -69,7 +71,7 @@ public:
         _count++;
     }
 
-    void AddLast(int item)
+    void AddLast(T item)
     {
 
         if (_head == nullptr && _isEmpty)
@@ -94,7 +96,7 @@ public:
         _count++;
     }
 
-    void AddAfter(int item, size_t index)
+    void AddAfter(T item, long long index)
     {
         if (index >= _count)
         {
@@ -119,9 +121,9 @@ public:
         _count++;
     }
 
-    int GetAndDeleteFirst()
+    T GetAndDeleteFirst()
     {
-        int tmp = -1;
+        T tmp{};
 
         tmp = GetFirst();
         DeleteFirst();
@@ -129,9 +131,9 @@ public:
         return tmp;
     }
 
-    int GetFirst()
+    T GetFirst()
     {
-        int tmp = -1;
+        T tmp{};
         _nodePointer = _head;
         if (_head == nullptr && _isEmpty)
         {
@@ -162,9 +164,9 @@ public:
         }
     }
 
-    int GetAndDeleteAt(size_t index)
+    T GetAndDeleteAt(long long index)
     {
-        int tmp = -1;
+        T tmp{};
 
         tmp = GetAt(index);
         DeleteAt(index);
@@ -172,7 +174,7 @@ public:
         return tmp;
     }
 
-    void DeleteAt(size_t index)
+    void DeleteAt(long long index)
     {
         if (index >= _count)
         {
@@ -182,7 +184,7 @@ public:
 
         _nodePointer = _head;
 
-        for (int cnt = 0; cnt <= index; cnt++)
+        for (int cnt = 0; cnt < index; cnt++)
         {
             _prevNodePointer = _nodePointer;
             _nodePointer = _nodePointer->next;
@@ -204,9 +206,9 @@ public:
         _count--;
     }
 
-    int GetAt(size_t index)
+    T GetAt(long long index)
     {
-        int tmp = -1;
+        T tmp{};
         if (index >= _count)
         {
             puts("List is EMPTY or index is greater than List's length");
@@ -226,19 +228,19 @@ public:
         return tmp;
     }
 
-    int GetAndDeleteLast()
+    T GetAndDeleteLast()
     {
-        int tmp = -1;
+        T tmp{};
         tmp = GetLast();
         DeleteLast();
 
         return tmp;
     }
 
-    int GetLast()
+    T GetLast()
     {
 
-        int tmp = -1;
+        T tmp{};
         if (_head != nullptr)
         {
             _nodePointer = _head;
@@ -294,7 +296,7 @@ public:
         return _isEmpty;
     }
 
-    size_t GetCount()
+    long long GetCount()
     {
         return _count;
     }
@@ -304,22 +306,22 @@ public:
 
 /*
 
-¹®Á¦ ¹ß»ý ¹× ÇØ°á ±â·Ï:
+ë¬¸ì œ ë°œìƒ ë° í•´ê²° ê¸°ë¡:
 
-1:GetAndDeleteLastÇÔ¼ö¸¦ µÎ¹ø ÀÌ»ó ½ÇÇàÇßÀ»‹š, Æ÷ÀÎÅÍ°¡ null pointer ¿À·ù¸¦ ÀÏÀ¸Å°´Â Çö»ó
-¿øÀÎ:Node¸¦ »èÁ¦ÇÏ´Â °úÁ¤¿¡¼­, »èÁ¦µÇ´Â ³ëµå¸¦ °¡¸£Å°°íÀÖ´ø ÀÌÀü ³ëµåÀÇ _nextÆ÷ÀÎÅÍ¸¦ nullptr·Î ¼³Á¤ÇÏÁö ¾Ê¾Ò°í, ±×°ÍÀÌ ¹Ýº¹¹®¿¡¼­ _nodePointer¿¡ »èÁ¦µÈ ³ëµåÀÇ ÁÖ¼Ò°ªÀÌ ³²¾ÆÀÖ¾ú´Ù
+1:GetAndDeleteLastí•¨ìˆ˜ë¥¼ ë‘ë²ˆ ì´ìƒ ì‹¤í–‰í–ˆì„ë–„, í¬ì¸í„°ê°€ null pointer ì˜¤ë¥˜ë¥¼ ì¼ìœ¼í‚¤ëŠ” í˜„ìƒ
+ì›ì¸:Nodeë¥¼ ì‚­ì œí•˜ëŠ” ê³¼ì •ì—ì„œ, ì‚­ì œë˜ëŠ” ë…¸ë“œë¥¼ ê°€ë¥´í‚¤ê³ ìžˆë˜ ì´ì „ ë…¸ë“œì˜ _nextí¬ì¸í„°ë¥¼ nullptrë¡œ ì„¤ì •í•˜ì§€ ì•Šì•˜ê³ , ê·¸ê²ƒì´ ë°˜ë³µë¬¸ì—ì„œ _nodePointerì— ì‚­ì œëœ ë…¸ë“œì˜ ì£¼ì†Œê°’ì´ ë‚¨ì•„ìžˆì—ˆë‹¤
 
-ÇØ°á:
-_prevNodePointer¸¦ Ãß°¡ÇØ¼­, ³ëµå »èÁ¦ ÀÛ¾÷½Ã¿¡, _prevNodePointer¿¡ ÀúÀåµÈ ³ëµå¿¡ Á¢±ÙÇØ¼­ _next Æ÷ÀÎÅÍ¸¦ nullptr·Î ÃÊ±âÈ­Çß´Ù
+í•´ê²°:
+_prevNodePointerë¥¼ ì¶”ê°€í•´ì„œ, ë…¸ë“œ ì‚­ì œ ìž‘ì—…ì‹œì—, _prevNodePointerì— ì €ìž¥ëœ ë…¸ë“œì— ì ‘ê·¼í•´ì„œ _next í¬ì¸í„°ë¥¼ nullptrë¡œ ì´ˆê¸°í™”í–ˆë‹¤
 
 2:
-addfirst ¸¦ ½ÃÇàÇßÀ»¶§, NodeÀÇ °ªÀÌ Á¤»óÀûÀ¸·Î Ãâ·ÂµÇÁö ¾ÊÀ½
-ÀÌÀ¯:AddLastÇÔ¼ö¿¡¼­ ¸®½ºÆ®°¡ ºñ¾îÀÖ´ÂÁö È®ÀÎÇÏ°í ÇÒ´çÇÏ´Â ºÎºÐ¿¡¼­
-Á¶°Ç¹®ÀÌ ÇÏ³ª°¡ ½ÇÇàµÇ¸é ´Ù¸¥°ÍÀÌ ½ÇÇàµÇÁö ¾Ê´Â ±¸Á¶°¡ ¾Æ´Ñ, µÎ°³ ´Ù ½ÇÇàµÇ´Â ±¸Á¶·Î ÀÛ¼ºµÇÀÖ¾ú°í,
-¸¸¾à, ºñ¾îÀÖ´Ù°¡ ÂüÀÌ¾î¼­ ºñ¾îÀÖÀ»‹š ÀÛµ¿µÇ´Â Á¶°Ç¹®ÀÌ ÀÛµ¿ÇÏ°í³ª¼­, ±× Á¶°Ç¹®¿¡¼­ ºñ¾îÀÖ´Ù°¡ °ÅÁþÀÌ µÇ¾î¼­, ±× ÀÌÈÄ¿¡ ÀÖ´ø ºñ¾îÀÖ´Ù°¡ °ÅÁþÀÏ¶§ ½ÇÇàµÇ´Â Á¶°Ç¹®ÀÌ Áßº¹À¸·Î ÀÛµ¿µÇ¾î¼­
-ÇÒ´çÀÌ ÀÌÁßÀ¸·Î ‰ç¾ú´Ù
+addfirst ë¥¼ ì‹œí–‰í–ˆì„ë•Œ, Nodeì˜ ê°’ì´ ì •ìƒì ìœ¼ë¡œ ì¶œë ¥ë˜ì§€ ì•ŠìŒ
+ì´ìœ :AddLastí•¨ìˆ˜ì—ì„œ ë¦¬ìŠ¤íŠ¸ê°€ ë¹„ì–´ìžˆëŠ”ì§€ í™•ì¸í•˜ê³  í• ë‹¹í•˜ëŠ” ë¶€ë¶„ì—ì„œ
+ì¡°ê±´ë¬¸ì´ í•˜ë‚˜ê°€ ì‹¤í–‰ë˜ë©´ ë‹¤ë¥¸ê²ƒì´ ì‹¤í–‰ë˜ì§€ ì•ŠëŠ” êµ¬ì¡°ê°€ ì•„ë‹Œ, ë‘ê°œ ë‹¤ ì‹¤í–‰ë˜ëŠ” êµ¬ì¡°ë¡œ ìž‘ì„±ë˜ìžˆì—ˆê³ ,
+ë§Œì•½, ë¹„ì–´ìžˆë‹¤ê°€ ì°¸ì´ì–´ì„œ ë¹„ì–´ìžˆì„ë–„ ìž‘ë™ë˜ëŠ” ì¡°ê±´ë¬¸ì´ ìž‘ë™í•˜ê³ ë‚˜ì„œ, ê·¸ ì¡°ê±´ë¬¸ì—ì„œ ë¹„ì–´ìžˆë‹¤ê°€ ê±°ì§“ì´ ë˜ì–´ì„œ, ê·¸ ì´í›„ì— ìžˆë˜ ë¹„ì–´ìžˆë‹¤ê°€ ê±°ì§“ì¼ë•Œ ì‹¤í–‰ë˜ëŠ” ì¡°ê±´ë¬¸ì´ ì¤‘ë³µìœ¼ë¡œ ìž‘ë™ë˜ì–´ì„œ
+í• ë‹¹ì´ ì´ì¤‘ìœ¼ë¡œ ë¬ì—ˆë‹¤
 
-ÇØ°á: if - if·Î µû·Î µÇÀÖ¾ú´ø Á¶°Ç¹®À», if-elseÇüÅÂ·Î ¼öÁ¤ÇÔ
+í•´ê²°: if - ifë¡œ ë”°ë¡œ ë˜ìžˆì—ˆë˜ ì¡°ê±´ë¬¸ì„, if-elseí˜•íƒœë¡œ ìˆ˜ì •í•¨
 
 */
-//TODO : ¸Þ¸ð¸® ´©¼ö Ã¼Å©
+//TODO : ë©”ëª¨ë¦¬ ëˆ„ìˆ˜ ì²´í¬
