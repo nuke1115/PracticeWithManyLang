@@ -9,7 +9,32 @@
 
 
 template<class T>
-class LinkedList//전체적으로 코드 최적화하기
+class DoublyLinkedList
+{
+private:
+
+    struct Node
+    {
+        T data;
+        Node* next = nullptr;
+        Node* prev = nullptr;
+    };
+
+public:
+    DoublyLinkedList()
+    {
+    }
+
+    ~DoublyLinkedList()
+    {
+
+    }
+};//todo
+
+
+
+template<class T>
+class SinglyLinkedList//전체적으로 코드 최적화하기
 {
 private:
 
@@ -22,14 +47,15 @@ private:
     Node* _head = nullptr;
     Node* _nodePointer = nullptr;
     Node* _prevNodePointer = nullptr;
+    Node* _tailNodePointer = nullptr;
     long long _count = 0;
     bool _isEmpty = true;
 public:
-    LinkedList()
+    SinglyLinkedList()
     {
     }
 
-    ~LinkedList()
+    ~SinglyLinkedList()
     {
         ClearList();
     }
@@ -48,6 +74,7 @@ public:
         _head = nullptr;
         _nodePointer = nullptr;
         _prevNodePointer = nullptr;
+        _tailNodePointer = nullptr;
         _count = 0;
         _isEmpty = true;
     }
@@ -59,6 +86,7 @@ public:
             _head = new Node;
             _isEmpty = false;
             _head->data = item;
+            _tailNodePointer = _head;
         }
         else
         {
@@ -73,26 +101,19 @@ public:
 
     void AddLast(T item)
     {
-
         if (_head == nullptr && _isEmpty)
         {
             _head = new Node;
+            _tailNodePointer = _head;
             _isEmpty = false;
-            _nodePointer = _head;
         }
         else
         {
-            _nodePointer = _head;
-            while (_nodePointer->next != nullptr)
-            {
-                _nodePointer = _nodePointer->next;
-            }
-            _nodePointer->next = new Node;
-            _nodePointer = _nodePointer->next;
+            _tailNodePointer->next = new Node;
+            _tailNodePointer = _tailNodePointer->next;
         }
+        _tailNodePointer->data = item;
 
-        _nodePointer->data = item;
-        _nodePointer = nullptr;
         _count++;
     }
 
@@ -115,6 +136,11 @@ public:
         newNode->next = _nodePointer;
         _prevNodePointer->next = newNode;
         newNode->data = item;
+
+        if (newNode->next == nullptr)
+        {
+            _tailNodePointer = newNode;
+        }
 
         _nodePointer = nullptr;
         _prevNodePointer = nullptr;
@@ -190,14 +216,26 @@ public:
             _nodePointer = _nodePointer->next;
         }
 
-        if (_head->next == nullptr)
+        if (_nodePointer == _head)
         {
             _head = nullptr;
+            _tailNodePointer = nullptr;
             _isEmpty = true;
         }
         else
         {
-            _prevNodePointer->next = _nodePointer != nullptr ? _nodePointer->next : nullptr;
+            //_prevNodePointer->next = _nodePointer != nullptr ? _nodePointer->next : nullptr;
+
+            if (_nodePointer == nullptr)
+            {
+                _prevNodePointer->next = nullptr;
+                _tailNodePointer = _prevNodePointer;
+            }
+            else
+            {
+                _prevNodePointer->next = _nodePointer->next;
+            }
+
         }
 
         delete _nodePointer;
@@ -243,12 +281,7 @@ public:
         T tmp{};
         if (_head != nullptr)
         {
-            _nodePointer = _head;
-            while (_nodePointer->next != nullptr)
-            {
-                _nodePointer = _nodePointer->next;
-            }
-            tmp = _nodePointer->data;
+            tmp = _tailNodePointer->data;
         }
         else
         {
@@ -272,12 +305,13 @@ public:
             if (_nodePointer == _head)
             {
                 _head = nullptr;
+                _tailNodePointer = nullptr;
                 _isEmpty = true;
             }
-
-            if (_prevNodePointer != nullptr)
+            else
             {
-                _prevNodePointer->next = nullptr;
+                _tailNodePointer = _prevNodePointer;
+                _tailNodePointer->next = nullptr;
             }
 
             delete _nodePointer;
