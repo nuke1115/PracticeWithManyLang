@@ -44,7 +44,7 @@ public:
 			return tmp;
 		}
 		_count--;
-		return _internalList.GetAndDeleteLast();
+		return _internalList.GetAndDeleteFirst();
 	}
 
 	T Peek()
@@ -56,7 +56,7 @@ public:
 			_isEmpty = true;
 			return tmp;
 		}
-		return _internalList.GetLast();
+		return _internalList.GetFirst();
 	}
 
 	void Clear()
