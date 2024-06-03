@@ -324,6 +324,30 @@ public:
         }
 
     }
+    
+    bool IsItContains(T item)
+    {
+        _nodePointer = _head;
+        if (_nodePointer == nullptr)
+        {
+            puts("Linked List is EMPTY");
+            return false;
+        }
+    
+        do
+        {
+            if (_nodePointer->data == item)
+            {
+                return true;
+            }
+            _nodePointer = _nodePointer->next;
+    
+        } while (_nodePointer != nullptr);
+    
+        _nodePointer = nullptr;
+    
+        return false;
+    }
 
     bool IsEmpty()
     {
