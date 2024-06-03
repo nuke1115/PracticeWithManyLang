@@ -76,6 +76,18 @@ public:
 		return _isEmpty;
 	}
 
+	bool IsItContains(T item)
+	{
+		if (_isEmpty)
+		{
+			puts("Queue is EMPTY");
+			return false;
+		}
+	
+		return _internalList.IsItContains(item);
+	}
+
+
 };
 
 
