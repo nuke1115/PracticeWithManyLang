@@ -3,7 +3,6 @@
 #ifndef QueueHeader
 #define QueueHeader
 #include "LinkedList.h"
-#include <limits>
 using namespace std;
 
 template<class T>
@@ -11,7 +10,7 @@ class Queue
 {
 private:
 	long long _count = 0;
-	long long _maxCount = numeric_limits<long long>::max();
+	long long _maxCount = 9223372036854775807;
 	SinglyLinkedList<T> _internalList = SinglyLinkedList<T>();
 	bool _isEmpty = true;
 public:
