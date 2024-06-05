@@ -70,7 +70,7 @@ public:
 
 	void Clear()
 	{
-		ResizeStack(0);
+		_count = -1;
 	}
 
 	void Push(T item)
