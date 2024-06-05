@@ -94,7 +94,7 @@ public:
 		_internalArray[_count] = item;
 	}
 
-	void ResizeStack(long newSize) //asdf
+	void ResizeStack(long newSize)
 	{
 		T* newArray = new T[newSize];
 		
